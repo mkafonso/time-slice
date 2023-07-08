@@ -9,9 +9,9 @@ import (
 	"github.com/mkafonso/time-slice/internal/usecases"
 )
 
-func TestUseCase_CompleteTask(t *testing.T) {
+func TestUseCase_DeleteTask(t *testing.T) {
 	// create a task manager with some tasks
-	taskManager := usecases.CompleteTaskManager{
+	taskManager := usecases.DeleteTaskManager{
 		Tasks: models.Tasks{
 			{Name: "Task 1", Done: false, CreatedAt: time.Now()},
 			{Name: "Task 2", Done: false, CreatedAt: time.Now()},
@@ -19,25 +19,23 @@ func TestUseCase_CompleteTask(t *testing.T) {
 		},
 	}
 
-	// complete the task with index 1
-	err := taskManager.CompleteTask(1)
+	// delete the task with index 1
+	err := taskManager.DeleteTask(1)
 	if err != nil {
-		t.Errorf("Error completing task: %v", err)
+		t.Errorf("Error deleting task: %v", err)
 	}
 
-	// verify that the task's Done status is now true and CompletedAt is set
-	task := taskManager.Tasks[1]
-	if !task.Done {
-		t.Errorf("Task 1 should be marked as done")
-	}
-	if task.CompletedAt.IsZero() {
-		t.Errorf("Task 1's CompletedAt time should not be zero")
+	// verify that the task with index 1 is no longer in the list of tasks
+	for i := range taskManager.Tasks {
+		if taskManager.Tasks[i].Name == "Task 2" {
+			t.Errorf("Task 2 should have been removed, but it is still present in the list")
+		}
 	}
 }
 
-func TestUseCase_CompleteTask_NotFound(t *testing.T) {
+func TestUseCase_DeleteTask_NotFound(t *testing.T) {
 	// create a task manager with some tasks
-	taskManager := usecases.CompleteTaskManager{
+	taskManager := usecases.DeleteTaskManager{
 		Tasks: models.Tasks{
 			{Name: "Task 1", Done: false, CreatedAt: time.Now()},
 			{Name: "Task 2", Done: false, CreatedAt: time.Now()},
@@ -45,8 +43,8 @@ func TestUseCase_CompleteTask_NotFound(t *testing.T) {
 		},
 	}
 
-	// complete a non-existent task with index 3
-	err := taskManager.CompleteTask(3)
+	// delete a non-existent task with index 4
+	err := taskManager.DeleteTask(3)
 	if err != customErrors.ErrorTaskNotFound {
 		t.Errorf("Expected ErrorTaskNotFound, but got %v", err)
 	}
