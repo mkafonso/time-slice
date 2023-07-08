@@ -6,7 +6,7 @@ import (
 	"github.com/mkafonso/time-slice/internal/usecases"
 )
 
-func TestUseCase_CreateTodo(t *testing.T) {
+func TestUseCase_CreateTask(t *testing.T) {
 	taskManager := usecases.TaskManager{}
 
 	taskManager.CreateTask("New Task")
@@ -38,7 +38,7 @@ func TestUseCase_CreateTodo(t *testing.T) {
 	}
 }
 
-func TestTaskManager_CreateTodo_MultipleTasks(t *testing.T) {
+func TestUseCase_CreateTaskWithMultipleTasks(t *testing.T) {
 	taskManager := usecases.TaskManager{}
 
 	// add three tasks
