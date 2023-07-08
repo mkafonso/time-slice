@@ -1,17 +1,15 @@
 package usecases
 
 import (
-	"errors"
 	"time"
 
+	customErrors "github.com/mkafonso/time-slice/internal/custom-errors"
 	"github.com/mkafonso/time-slice/internal/models"
 )
 
 type CompleteTaskManager struct {
 	Tasks models.Tasks
 }
-
-var ErrorTaskNotFound = errors.New("task not found")
 
 func (tm *CompleteTaskManager) CompleteTask(index int) error {
 	for i := range tm.Tasks {
@@ -22,5 +20,5 @@ func (tm *CompleteTaskManager) CompleteTask(index int) error {
 		}
 	}
 
-	return ErrorTaskNotFound
+	return customErrors.ErrorTaskNotFound
 }
