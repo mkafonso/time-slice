@@ -7,7 +7,7 @@ import (
 )
 
 func TestUseCase_CreateTask(t *testing.T) {
-	taskManager := usecases.TaskManager{}
+	taskManager := usecases.CreateTaskManager{}
 
 	taskManager.CreateTask("New Task")
 
@@ -39,7 +39,7 @@ func TestUseCase_CreateTask(t *testing.T) {
 }
 
 func TestUseCase_CreateTaskWithMultipleTasks(t *testing.T) {
-	taskManager := usecases.TaskManager{}
+	taskManager := usecases.CreateTaskManager{}
 
 	// add three tasks
 	taskManager.CreateTask("Task 1")

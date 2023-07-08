@@ -6,11 +6,11 @@ import (
 	"github.com/mkafonso/time-slice/internal/models"
 )
 
-type TaskManager struct {
+type CreateTaskManager struct {
 	Tasks models.Tasks
 }
 
-func (tm *TaskManager) CreateTask(name string) {
+func (tm *CreateTaskManager) CreateTask(name string) {
 	newTask := models.Task{
 		Name:        name,
 		Done:        false,
