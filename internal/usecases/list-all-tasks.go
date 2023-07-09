@@ -2,6 +2,9 @@ package usecases
 
 import (
 	"fmt"
+	"os"
+	"os/exec"
+	"runtime"
 	"time"
 
 	"github.com/alexeyco/simpletable"
@@ -14,6 +17,9 @@ type ListAllTasksManager struct {
 }
 
 func (tm *ListAllTasksManager) ListAllTasks(tasks *models.Tasks) {
+	clearScreen()
+	fmt.Print("\n")
+
 	table := simpletable.New()
 	table.Header = &simpletable.Header{
 		Cells: []*simpletable.Cell{
@@ -57,9 +63,8 @@ func (tm *ListAllTasksManager) ListAllTasks(tasks *models.Tasks) {
 	}}
 
 	table.Println()
+	fmt.Print("\n\n\n")
 }
-
-// CountPendingTasks
 
 func countPendingTasks(tasks interface{}) int {
 	tasksSlice := tasks.(*models.Tasks)
@@ -73,4 +78,17 @@ func countPendingTasks(tasks interface{}) int {
 	}
 
 	return total
+}
+
+func clearScreen() {
+	var clearCmd *exec.Cmd
+
+	if runtime.GOOS == "windows" {
+		clearCmd = exec.Command("cmd", "/c", "cls")
+	} else {
+		clearCmd = exec.Command("clear")
+	}
+
+	clearCmd.Stdout = os.Stdout
+	clearCmd.Run()
 }
