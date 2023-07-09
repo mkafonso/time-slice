@@ -8,17 +8,18 @@ import (
 )
 
 type CompleteTaskManager struct {
-	Tasks models.Tasks
+	Tasks *models.Tasks
 }
 
-func (tm *CompleteTaskManager) CompleteTask(index int) error {
-	for i := range tm.Tasks {
-		if i == index {
-			tm.Tasks[i].Done = true
-			tm.Tasks[i].CompletedAt = time.Now()
-			return nil
-		}
+func (tm *CompleteTaskManager) CompleteTask(tasks interface{}, index int) error {
+	tasksSlice := tasks.(*models.Tasks)
+
+	if index <= 0 || index > len(*tasksSlice) {
+		return customErrors.ErrorTaskNotFound
 	}
 
-	return customErrors.ErrorTaskNotFound
+	(*tasksSlice)[index-1].Done = true
+	(*tasksSlice)[index-1].CompletedAt = time.Now()
+
+	return nil
 }

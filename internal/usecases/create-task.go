@@ -7,7 +7,7 @@ import (
 )
 
 type CreateTaskManager struct {
-	Tasks models.Tasks
+	Tasks *models.Tasks
 }
 
 func (tm *CreateTaskManager) CreateTask(name string) {
@@ -18,5 +18,5 @@ func (tm *CreateTaskManager) CreateTask(name string) {
 		CompletedAt: time.Now(),
 	}
 
-	tm.Tasks = append(tm.Tasks, newTask)
+	*tm.Tasks = append(*tm.Tasks, newTask)
 }

@@ -9,28 +9,25 @@ import (
 	"github.com/mkafonso/time-slice/internal/models"
 )
 
-type LoadFromFileManager struct {
-	Tasks models.Tasks
-}
-
-func (tm *LoadFromFileManager) LoadTasksFromFile(filename string) error {
+func LoadTasksFromFile(filename string) (*models.Tasks, error) {
 	file, err := ioutil.ReadFile(filename)
 
 	if err != nil {
 		if errors.Is(err, os.ErrNotExist) {
-			return nil
+			return &models.Tasks{}, nil
 		}
-		return err
+		return &models.Tasks{}, err
 	}
 
 	if len(file) == 0 {
-		return nil
+		return &models.Tasks{}, nil
 	}
 
-	err = json.Unmarshal(file, tm)
+	var tasks models.Tasks
+	err = json.Unmarshal(file, &tasks)
 	if err != nil {
-		return nil
+		return &models.Tasks{}, nil
 	}
 
-	return nil
+	return &tasks, nil
 }

@@ -8,14 +8,21 @@ import (
 )
 
 type StoreTasksInFileManager struct {
-	Tasks models.Tasks
+	Tasks *models.Tasks
 }
 
-func (tm *StoreTasksInFileManager) StoreTasksInFile(filename string) error {
-	data, err := json.Marshal(tm.Tasks)
+func (tm *StoreTasksInFileManager) StoreTasksInFile(tasks interface{}, filename string) error {
+	tasksSlice := tasks.(*models.Tasks)
+
+	data, err := json.MarshalIndent(*tasksSlice, "", "  ")
 	if err != nil {
 		return err
 	}
 
-	return ioutil.WriteFile(filename, data, 0666)
+	err = ioutil.WriteFile(filename, data, 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
