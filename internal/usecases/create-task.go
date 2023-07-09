@@ -10,7 +10,9 @@ type CreateTaskManager struct {
 	Tasks *models.Tasks
 }
 
-func (tm *CreateTaskManager) CreateTask(name string) {
+func (tm *CreateTaskManager) CreateTask(tasks interface{}, name string) {
+	tasksSlice := tasks.(*models.Tasks)
+
 	newTask := models.Task{
 		Name:        name,
 		Done:        false,
@@ -18,5 +20,5 @@ func (tm *CreateTaskManager) CreateTask(name string) {
 		CompletedAt: time.Now(),
 	}
 
-	*tm.Tasks = append(*tm.Tasks, newTask)
+	*tasksSlice = append(*tasksSlice, newTask)
 }

@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	customErrors "github.com/mkafonso/time-slice/internal/custom-errors"
+	"github.com/mkafonso/time-slice/internal/helpers"
 	"github.com/mkafonso/time-slice/internal/models"
 	"github.com/mkafonso/time-slice/internal/usecases"
 )
@@ -47,7 +47,7 @@ func TestUseCase_CompleteTask_NotFound(t *testing.T) {
 
 	// complete a non-existent task
 	err := taskManager.CompleteTask(tasks, 10)
-	if err != customErrors.ErrorTaskNotFound {
+	if err != helpers.ErrorTaskNotFound {
 		t.Errorf("Expected ErrorTaskNotFound, but got %v", err)
 	}
 }

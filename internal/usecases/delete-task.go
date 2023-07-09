@@ -1,21 +1,22 @@
 package usecases
 
 import (
-	customErrors "github.com/mkafonso/time-slice/internal/custom-errors"
+	"github.com/mkafonso/time-slice/internal/helpers"
 	"github.com/mkafonso/time-slice/internal/models"
 )
 
 type DeleteTaskManager struct {
-	Tasks models.Tasks
+	Tasks *models.Tasks
 }
 
-func (tm *DeleteTaskManager) DeleteTask(index int) error {
-	for i := range tm.Tasks {
-		if i == index {
-			tm.Tasks = append(tm.Tasks[:i], tm.Tasks[i+1:]...)
-			return nil
-		}
+func (tm *DeleteTaskManager) DeleteTask(tasks interface{}, index int) error {
+	tasksSlice := tasks.(*models.Tasks)
+
+	if index <= 0 || index > len(*tasksSlice) {
+		return helpers.ErrorTaskNotFound
 	}
 
-	return customErrors.ErrorTaskNotFound
+	*tasksSlice = append((*tasksSlice)[:index-1], (*tasksSlice)[index:]...)
+
+	return nil
 }

@@ -12,7 +12,7 @@ func TestUseCase_CreateTask(t *testing.T) {
 
 	taskManager := &usecases.CreateTaskManager{Tasks: tasks}
 
-	taskManager.CreateTask("New Task")
+	taskManager.CreateTask(tasks, "New Task")
 
 	// check length of taskManager.Tasks
 	if len(*taskManager.Tasks) != 1 {
@@ -47,9 +47,9 @@ func TestUseCase_CreateTaskWithMultipleTasks(t *testing.T) {
 	taskManager := &usecases.CreateTaskManager{Tasks: tasks}
 
 	// add three tasks
-	taskManager.CreateTask("Task 1")
-	taskManager.CreateTask("Task 2")
-	taskManager.CreateTask("Task 3")
+	taskManager.CreateTask(tasks, "Task 1")
+	taskManager.CreateTask(tasks, "Task 2")
+	taskManager.CreateTask(tasks, "Task 3")
 
 	// check taskManager.Tasks length
 	if len(*taskManager.Tasks) != 3 {
