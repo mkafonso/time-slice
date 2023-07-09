@@ -11,22 +11,22 @@ import (
 
 func TestUseCase_CompleteTask(t *testing.T) {
 	// create a task manager with some tasks
-	taskManager := usecases.CompleteTaskManager{
-		Tasks: models.Tasks{
-			{Name: "Task 1", Done: false, CreatedAt: time.Now()},
-			{Name: "Task 2", Done: false, CreatedAt: time.Now()},
-			{Name: "Task 3", Done: false, CreatedAt: time.Now()},
-		},
+	tasks := &models.Tasks{
+		{Name: "Task 1", Done: false, CreatedAt: time.Now()},
+		{Name: "Task 2", Done: false, CreatedAt: time.Now()},
+		{Name: "Task 3", Done: false, CreatedAt: time.Now()},
 	}
 
+	taskManager := &usecases.CompleteTaskManager{Tasks: tasks}
+
 	// complete the task with index 1
-	err := taskManager.CompleteTask(1)
+	err := taskManager.CompleteTask(tasks, 2)
 	if err != nil {
 		t.Errorf("Error completing task: %v", err)
 	}
 
 	// verify that the task's Done status is now true and CompletedAt is set
-	task := taskManager.Tasks[1]
+	task := (*tasks)[1]
 	if !task.Done {
 		t.Errorf("Task 1 should be marked as done")
 	}
@@ -37,16 +37,16 @@ func TestUseCase_CompleteTask(t *testing.T) {
 
 func TestUseCase_CompleteTask_NotFound(t *testing.T) {
 	// create a task manager with some tasks
-	taskManager := usecases.CompleteTaskManager{
-		Tasks: models.Tasks{
-			{Name: "Task 1", Done: false, CreatedAt: time.Now()},
-			{Name: "Task 2", Done: false, CreatedAt: time.Now()},
-			{Name: "Task 3", Done: false, CreatedAt: time.Now()},
-		},
+	tasks := &models.Tasks{
+		{Name: "Task 1", Done: false, CreatedAt: time.Now()},
+		{Name: "Task 2", Done: false, CreatedAt: time.Now()},
+		{Name: "Task 3", Done: false, CreatedAt: time.Now()},
 	}
 
-	// complete a non-existent task with index 3
-	err := taskManager.CompleteTask(3)
+	taskManager := &usecases.CompleteTaskManager{Tasks: tasks}
+
+	// complete a non-existent task
+	err := taskManager.CompleteTask(tasks, 10)
 	if err != customErrors.ErrorTaskNotFound {
 		t.Errorf("Expected ErrorTaskNotFound, but got %v", err)
 	}

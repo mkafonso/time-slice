@@ -3,21 +3,24 @@ package usecases_test
 import (
 	"testing"
 
+	"github.com/mkafonso/time-slice/internal/models"
 	"github.com/mkafonso/time-slice/internal/usecases"
 )
 
 func TestUseCase_CreateTask(t *testing.T) {
-	taskManager := usecases.CreateTaskManager{}
+	tasks := &models.Tasks{}
+
+	taskManager := &usecases.CreateTaskManager{Tasks: tasks}
 
 	taskManager.CreateTask("New Task")
 
 	// check length of taskManager.Tasks
-	if len(taskManager.Tasks) != 1 {
-		t.Errorf("Expected list to have length 1. Got %d", len(taskManager.Tasks))
+	if len(*taskManager.Tasks) != 1 {
+		t.Errorf("Expected list to have length 1. Got %d", len(*taskManager.Tasks))
 	}
 
 	// check if the item was added correctly
-	task := taskManager.Tasks[0]
+	task := (*tasks)[0]
 	if task.Name != "New Task" {
 		t.Errorf("Incorrect task name. Expected 'New Task' but got '%s'", task.Name)
 	}
@@ -39,7 +42,9 @@ func TestUseCase_CreateTask(t *testing.T) {
 }
 
 func TestUseCase_CreateTaskWithMultipleTasks(t *testing.T) {
-	taskManager := usecases.CreateTaskManager{}
+	tasks := &models.Tasks{}
+
+	taskManager := &usecases.CreateTaskManager{Tasks: tasks}
 
 	// add three tasks
 	taskManager.CreateTask("Task 1")
@@ -47,13 +52,13 @@ func TestUseCase_CreateTaskWithMultipleTasks(t *testing.T) {
 	taskManager.CreateTask("Task 3")
 
 	// check taskManager.Tasks length
-	if len(taskManager.Tasks) != 3 {
-		t.Errorf("Expected list to have length 3. Got %d", len(taskManager.Tasks))
+	if len(*taskManager.Tasks) != 3 {
+		t.Errorf("Expected list to have length 3. Got %d", len(*taskManager.Tasks))
 	}
 
 	// check if the tasks were added correctly
 	expectedNames := []string{"Task 1", "Task 2", "Task 3"}
-	for i, task := range taskManager.Tasks {
+	for i, task := range *taskManager.Tasks {
 		if task.Name != expectedNames[i] {
 			t.Errorf("Incorrect task name. Expected '%s', but got '%s'", expectedNames[i], task.Name)
 		}

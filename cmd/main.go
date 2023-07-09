@@ -19,7 +19,6 @@ func main() {
 	tasks := &models.Tasks{}
 
 	// create the task managers
-	// taskManagerLoad := &usecases.LoadFromFileManager{Tasks: tasks}
 	taskManagerStore := &usecases.StoreTasksInFileManager{Tasks: tasks}
 	taskManagerCreate := &usecases.CreateTaskManager{Tasks: tasks}
 	taskManagerComplete := &usecases.CompleteTaskManager{Tasks: tasks}
