@@ -38,20 +38,20 @@ func (tm *ListAllTasksManager) ListAllTasks(tasks *models.Tasks) {
 
 		item := helpers.PendingColor(task.Name)
 		done := helpers.PendingColor("No")
-		createdAd := helpers.PendingColor(task.CreatedAt.Format(time.RFC822))
+		created := helpers.PendingColor(task.CreatedAt.Format(time.RFC822))
 		completedAt := helpers.PendingColor(task.CreatedAt.Format(time.RFC822))
 		if task.Done {
 			item = helpers.DoneColor(fmt.Sprintf("🎉 %s", task.Name))
 			done = helpers.DoneColor("Yes")
-			createdAd = helpers.DoneColor(createdAd)
-			completedAt = helpers.DoneColor(completedAt)
+			created = helpers.DoneColor(task.CreatedAt.Format(time.RFC822))
+			completedAt = helpers.DoneColor(task.CreatedAt.Format(time.RFC822))
 		}
 
 		cells = append(cells, *&[]*simpletable.Cell{
 			{Text: fmt.Sprintf("%d", index)},
 			{Text: item},
 			{Text: done},
-			{Text: createdAd},
+			{Text: created},
 			{Text: completedAt},
 		})
 	}
